@@ -91,3 +91,4 @@ sudo a2ensite $name.conf
 sudo service apache2 restart
  else
  echo "Correct system not found!"
+fi
