@@ -1,31 +1,94 @@
 #!/bin/bash
 
-If
-su -
+check='lsb_release -d'
+
+if [ "${check}"="Centos" ]; then 
+
 yum update
-yum install httpd httpd-tools -y &&  yum install mariadb-server mariadb -y && yum install php php-fpm php-mysqlnd php-opcache php-gd $
-systemctl start httpd
-systemctl enabled httpd
-firewall-cmd --pernament --zone=publick --add-service=http
-systemctl reload firewall
+yum install httpd httpd-tools -y &&  yum install mariadb-server mariadb -y && yum install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring -y && yum install zip -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+#firewall-cmd --pernament --zone=publick --add-service=http
+#sudo systemctl reload firewalld
 echo -n "Enter sitename: "
 read name
 
-sudo wget https://wordpress.org/latest.zip
-sudo unzip latest.zip /var/www/$name
-sudo rm latest.zip
+#config
+cat >  /etc/httpd/conf.d/$name.conf <<EOF
+<VirtualHost *:80>
+ServerAdmin $name.by
+DocumentRoot /var/www/$name/wordpress
+ServerName $name.by
+ServerAlias www.$name.by
+<Directory /var/www/$name/wordpress>
+AllowOverride all
+</Directory>
+ErrorLog logs/$name.by_error.log
+CustomLog logs/$name.by_access.log combined
+</VirtualHost>
+EOF
 
-systemctl start mariadb 
-systemctl enabled mariadb
+#wordpress
+sudo wget -P /tmp https://wordpress.org/latest.zip 
+sudo unzip /tmp/latest.zip -d /var/www/$name && sudo rm /tmp/latest.zip
 
-mysql_secure_insatllation
 
-mysql -u root -p
+#mariaDB
+sudo systemctl start mariadb 
+sudo systemctl enable mariadb
+sudo  mysql_secure_installation
+
+sudo mysql -u root -p "CREATE DATABASE base1;"
+sudo mysql -u root -p "CREATE USER 'user'@'localhost' IDENTIFIED BY '12345';"
+sudo mysql -u root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@'localhost';"
+sudo mysql -u root -p "FLUSH PRIVELEGES;"
 
 systemctl start php-fpm
-systemctl enabled php-fpm
+systemctl enable php-fpm
 
-chown apache:apache /var/www/$name
+sudo mkdir /var/www/$name
+sudo chown apache:apache /var/www/$name
 
 systemctl restart httpd php-fpm
 
+
+elif [ "${check}"="Ubuntu" ]; then 
+ 
+ exec 2>error.log
+sudo apt-get update
+
+#install 
+sudo apt-get install zip -y && sudo apt-get install mariadb-server mariadb-client -y && sudo apt-get install apache2 -y && sudo apt-get install &&sudo apt-get install php-mysql php-curl php-json php-cgi php libapache2-mod-php php-xml -y
+
+echo "Success install">&2
+
+#alias_name
+echo "Enter sitename: "
+read "name"
+
+#CFG_file
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/$name.conf
+
+#wordpress
+sudo wget https://wordpress.org/latest.zip  
+sudo unzip latest.zip -d /var/www -A
+sudo rm latest.zip
+sudo mv /var/www/wordpress /var/www/$name
+
+#privileges
+sudo chown -R www-data:www-data /var/www/$name/
+sudo rm -rf /var/www/html/index.html 
+
+#database
+#sudo mysql_secure_installation
+
+sudo mysql -u -root -p "CREATE DATABSE  base1;"
+sudo mysql -u -root -p "CREATE USER 'user'@'localhost' IDENTIFIED BY '12345';"
+sudo mysql -u -root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@'localhost';"
+sudo mysql -u -root -p "FLUSH PRIVELEGES;"
+
+#ensite
+sudo a2ensite $name.conf 
+sudo service apache2 restart
+ else
+ echo "Correct system not found!"
