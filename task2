@@ -53,3 +53,4 @@ sed -a "$/Hostname=srv10/" /etc/zabbix/zabbix_agentd.conf
 
 else
 echo "Not found access hostname"
+fi
