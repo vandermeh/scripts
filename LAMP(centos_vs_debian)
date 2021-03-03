@@ -41,7 +41,6 @@ sudo  mysql_secure_installation
 sudo mysql -u root -p "CREATE DATABASE base1;"
 sudo mysql -u root -p "CREATE USER 'user'@'localhost' IDENTIFIED BY '12345';"
 sudo mysql -u root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@'localhost';"
-sudo mysql -u root -p "FLUSH PRIVELEGES;"
 
 systemctl start php-fpm
 systemctl enable php-fpm
@@ -85,7 +84,7 @@ sudo rm -rf /var/www/html/index.html
 sudo mysql -u -root -p "CREATE DATABSE  base1;"
 sudo mysql -u -root -p "CREATE USER 'user'@'localhost' IDENTIFIED BY '12345';"
 sudo mysql -u -root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@'localhost';"
-sudo mysql -u -root -p "FLUSH PRIVELEGES;"
+
 
 #ensite
 sudo a2ensite $name.conf 
