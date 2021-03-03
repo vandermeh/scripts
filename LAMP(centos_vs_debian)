@@ -1,0 +1,31 @@
+#!/bin/bash
+
+If
+su -
+yum update
+yum install httpd httpd-tools -y &&  yum install mariadb-server mariadb -y && yum install php php-fpm php-mysqlnd php-opcache php-gd $
+systemctl start httpd
+systemctl enabled httpd
+firewall-cmd --pernament --zone=publick --add-service=http
+systemctl reload firewall
+echo -n "Enter sitename: "
+read name
+
+sudo wget https://wordpress.org/latest.zip
+sudo unzip latest.zip /var/www/$name
+sudo rm latest.zip
+
+systemctl start mariadb 
+systemctl enabled mariadb
+
+mysql_secure_insatllation
+
+mysql -u root -p
+
+systemctl start php-fpm
+systemctl enabled php-fpm
+
+chown apache:apache /var/www/$name
+
+systemctl restart httpd php-fpm
+
