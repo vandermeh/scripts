@@ -7,6 +7,15 @@ sudo apt-get install php-gd php-bcmath php-mbstring php-xml php-ldap php-json ph
 
 sudo systemctl start apache2
 
+#install zabbix
+wget /tmp https://repo.zabbix.com/zabbix/5.2/debian/pool/main/z/zabbix-release/zabbix-release_5.2-1+debian10_all.deb
+dpkg -i /tmp/zabbix-release_5.2-1+debian10_all.deb
+sudo rm /tmp/zabbix-release_5.3-1+debian10_all.deb
+sudo apt-get update
+sudo apt-get install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent -y
+
+zcat /usr/share/doc/zabbix-server-mysql/create.sql.gz | mysql -uzabbix -p'123456' zabbix 
+
 #DATABASE
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
@@ -16,13 +25,6 @@ sudo mysql_secure_installetion
 sudo mysql -u root -e "create database zabbix character set utf8 collate utf8_bin;"
 sudo mysql -u root -e "create user 'zabbix' IDENTIFIED BY '123456';"
 sudo mysql -u root -e "GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix';"
-
-#install zabbix
-wget /tmp https://repo.zabbix.com/zabbix/5.3/debian/pool/main/z/zabbix-release/zabbix-release_5.3-1%2Bdebian10_all.deb
-sudo dpkg -i zabbix-release_5.3-1+debian10_all.deb
-sudo rm /tmp/zabbix-release_5.3-1+debian10_all.deb
-sudo apt-get update
-sudo apt-get install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent -y
 
 #Zabbix config
 sed -i "/\# DBHost=/c DBHost=localhost" /etc/zabbix/zabbix_server.conf
