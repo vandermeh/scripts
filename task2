@@ -50,7 +50,7 @@ sudo apt-get install php-gd php-bcmath php-mbstring php-xml php-ldap php-json ph
 sudo apt-get install zabbix-agent
 
 sed -a "$/Server=192.168.0.108/" /etc/zabbix/zabbix_agentd.conf
-sed -a "$/ServerActive=192.168.0.108 /etc/zabbix/zabbix_agentd.conf
+sed -a "$/ServerActive=192.168.0.108" /etc/zabbix/zabbix_agentd.conf
 sed -a "$/Hostname=srv10/" /etc/zabbix/zabbix_agentd.conf
 
 else
