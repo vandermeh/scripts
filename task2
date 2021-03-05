@@ -49,7 +49,7 @@ sudo systemctl enable zabbix-server zabbix-agent
 
 elif [ "$host"="agent" ]; then
 echo "agent located"
-sudo apt-get install php-gd php-bcmath php-mbstring php-xml php-ldap php-json php-mysql php-curl php-cgi php libapache2-mod-php -y && sudo apt-get install apache2 && sudo apt-get install mariadb-server mariadb-client -y 
+sudo apt-get install php-gd php-bcmath php-mbstring php-xml php-ldap php-json php-mysql php-curl php-cgi php libapache2-mod-php -y
 
 sudo apt-get install zabbix-agent
 
