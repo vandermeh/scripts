@@ -38,9 +38,9 @@ sudo systemctl start mariadb
 sudo systemctl enable mariadb
 sudo  mysql_secure_installation
 
-sudo mysql -u root -p "CREATE DATABASE base1;"
-sudo mysql -u root -p "CREATE USER 'user'@'localhost' IDENTIFIED BY '12345';"
-sudo mysql -u root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@'localhost';"
+sudo mysql -u root -p "create database base1;"
+sudo mysql -u root -p "create user 'user'@localhost IDENTIFIED BY '12345';"
+sudo mysql -u root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@localhost;"
 
 systemctl start php-fpm
 systemctl enable php-fpm
@@ -81,8 +81,8 @@ sudo rm -rf /var/www/html/index.html
 #database
 #sudo mysql_secure_installation
 
-sudo mysql -u -root -p "CREATE DATABSE  base1;"
-sudo mysql -u -root -p "CREATE USER 'user'@'localhost' IDENTIFIED BY '12345';"
+sudo mysql -u -root -p "create database base1;"
+sudo mysql -u -root -p "create user 'user'@'localhost' IDENTIFIED BY '12345';"
 sudo mysql -u -root -p "GRANT ALL PRIVILEGES ON base1.* TO 'user'@'localhost';"
 
 
