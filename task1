@@ -1,7 +1,7 @@
 #!/bin/bash
 
-hostname='hostname'
-if [ "${hostname}"=="server" ]; then
+host='hostname'
+if [ "$host"="server" ]; then
 sudo apt-get install nfs-kernel-server nfs-common portmap -y
 sudo mkdir /home/nfs
 sudo chown nobody:nogroup /home/nfs
@@ -15,7 +15,7 @@ sudo mount -t nfs 192.168.0.109:/home/nfs /mnt/nfs
 
 echo "server located"
 
-elif [ "${hostname}"=="client" ]; then
+elif [ "$host"="client" ]; then
 
 sudo apt-get install nfs-common
 
