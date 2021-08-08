@@ -2,10 +2,11 @@
 
 check='lsb_release -d'
 
-if [ "${check}"="Centos" ]; then 
+if cat /etc/*release | grep ^NAME | grep CentOS; then
 
 yum update
 yum install httpd httpd-tools -y &&  yum install mariadb-server mariadb -y && yum install php php-fpm php-mysqlnd php-opcache php-gd php-xml php-mbstring -y && yum install zip -y
+echo "Success install">&2
 sudo systemctl start httpd
 sudo systemctl enable httpd
 #firewall-cmd --pernament --zone=publick --add-service=http
@@ -51,13 +52,12 @@ sudo chown apache:apache /var/www/$name
 systemctl restart httpd php-fpm
 
 
-elif [ "${check}"="Ubuntu" ]; then 
- 
- exec 2>error.log
+elif cat /etc/*release | grep ^NAME | grep Ubuntu; then
+
 sudo apt-get update
 
 #install 
-sudo apt-get install zip -y && sudo apt-get install mariadb-server mariadb-client -y && sudo apt-get install apache2 -y && sudo apt-get install &&sudo apt-get install php-mysql php-curl php-json php-cgi php libapache2-mod-php php-xml -y
+sudo apt-get install zip -y && sudo apt-get install mariadb-server mariadb-client -y && sudo apt-get install apache2 -y && sudo apt-get install && sudo apt-get install php-mysql php-curl php-json php-cgi php libapache2-mod-php php-xml -y
 
 echo "Success install">&2
 
